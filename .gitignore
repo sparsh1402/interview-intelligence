@@ -1,0 +1,4 @@
+# Built by GitHub Actions from kb/ — don't commit
+site/
+__pycache__/
+.DS_Store

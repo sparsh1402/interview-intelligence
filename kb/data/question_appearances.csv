@@ -1,0 +1,28 @@
+app_id,qid,exp_id,company,role,round,round_type,original_wording,reported_hints_followups,interview_date
+APP-0001,Q-0001,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"Java basics – memory management",None reported,Unknown
+APP-0002,Q-0002,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"string pool",None reported,Unknown
+APP-0003,Q-0003,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"Java 8 features",None reported,Unknown
+APP-0004,Q-0004,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"Multi-threading vs. multi-tasking concepts",None reported,Unknown
+APP-0005,Q-0005,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"Some discussion on executor services and thread pools",None reported,Unknown
+APP-0006,Q-0006,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"SOLID principles",None reported,Unknown
+APP-0007,Q-0007,EXP-0001,Mastercard,SDE 2 Full Stack,R1,Core Java & Fundamentals,"overall object-oriented design understanding",None reported,Unknown
+APP-0008,Q-0008,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Spring Boot – annotations",Rapid-fire format,Unknown
+APP-0009,Q-0009,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"differences in Spring vs Spring Boot 3",Rapid-fire format,Unknown
+APP-0010,Q-0010,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Spring Security",Rapid-fire format,Unknown
+APP-0011,Q-0011,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"JPA/Hibernate",Rapid-fire format,Unknown
+APP-0012,Q-0012,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Dependency Injection – @Autowired vs constructor injection",Rapid-fire format,Unknown
+APP-0013,Q-0005,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Executor Services – detailed features, thread pools, and usage",Rapid-fire format,Unknown
+APP-0014,Q-0013,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Java Features – old vs new (streams, lambdas, etc.)",Rapid-fire format,Unknown
+APP-0015,Q-0001,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"memory handling",Rapid-fire format,Unknown
+APP-0016,Q-0014,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"garbage collection",Rapid-fire format,Unknown
+APP-0017,Q-0015,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Concurrency & Locks – different types of locks",Rapid-fire format,Unknown
+APP-0018,Q-0016,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"scenarios on where/how to apply them; Scenario-based problems – designing where to place locks in multi-threaded situations",Scenarios themselves not reported,Unknown
+APP-0019,Q-0017,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Project Discussion – deep dive into my work, with focus on performance improvements",None reported,Unknown
+APP-0020,Q-0018,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"justifying why I reported a '30% improvement in query performance,' how that metric was calculated, and why not a different percentage",Follow-ups: how calculated; why not a different percentage,Unknown
+APP-0021,Q-0019,EXP-0001,Mastercard,SDE 2 Full Stack,R2,Spring + Concurrency deep dive (senior developer),"Design Patterns – discussion across different patterns with examples",None reported,Unknown
+APP-0022,Q-0020,EXP-0001,Mastercard,SDE 2 Full Stack,R3,Managerial + DSA,"DSA problem – HashMap + sorting (moderate/easy level)",None reported,Unknown
+APP-0023,Q-0021,EXP-0001,Mastercard,SDE 2 Full Stack,R3,Managerial + DSA,"How thread pools are created",Part of 'Executor Services & Thread Pools – detailed discussion again',Unknown
+APP-0024,Q-0022,EXP-0001,Mastercard,SDE 2 Full Stack,R3,Managerial + DSA,"Whether threads 'actually die' in a system",Part of 'Executor Services & Thread Pools – detailed discussion again',Unknown
+APP-0025,Q-0023,EXP-0001,Mastercard,SDE 2 Full Stack,R3,Managerial + DSA,"Lifecycle and management of threads",Part of 'Executor Services & Thread Pools – detailed discussion again',Unknown
+APP-0026,Q-0005,EXP-0001,Mastercard,SDE 2 Full Stack,R3,Managerial + DSA,"Executor Services & Thread Pools – detailed discussion again",Third appearance in same Super Day,Unknown
+APP-0027,Q-0004,EXP-0001,Mastercard,SDE 2 Full Stack,R3,Managerial + DSA,"Multi-threading concepts were revisited in detail",None reported,Unknown

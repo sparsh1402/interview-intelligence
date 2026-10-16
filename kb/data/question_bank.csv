@@ -1,0 +1,24 @@
+qid,canonical_title,topic,subtopic,type,difficulty_reported,difficulty_estimated,dataset_frequency,companies,solution_status,solution_ref,last_reviewed,notes
+Q-0001,Java memory management (heap / stack / metaspace / memory leaks),Java Core,JVM memory,Java,Medium (round-level),Medium,2,Mastercard,Drafted,solutions/java-core.md#Q-0001,Unknown,Asked R1 and R2 ('memory handling')
+Q-0002,String pool and string interning,Java Core,Strings,Java,Medium (round-level),Easy,1,Mastercard,Drafted,solutions/java-core.md#Q-0002,Unknown,
+Q-0003,Java 8 features,Java Core,Java 8,Java,Medium (round-level),Easy,1,Mastercard,Drafted,solutions/java-core.md#Q-0003,Unknown,Related to Q-0013
+Q-0004,Multithreading vs multitasking; multithreading fundamentals,Concurrency,Fundamentals,Java,Medium (round-level),Easy,2,Mastercard,Drafted,solutions/concurrency.md#Q-0004,Unknown,R1 and R3 ('revisited in detail')
+Q-0005,ExecutorService and thread pools: features and usage,Concurrency,Executors,Java,Medium (R1 round-level); Unknown (R2/R3),Medium,3,Mastercard,Drafted,solutions/concurrency.md#Q-0005,Unknown,Asked in ALL three rounds of EXP-0001
+Q-0006,SOLID principles,Design,OOD principles,LLD,Medium (round-level),Easy,1,Mastercard,Drafted,solutions/design.md#Q-0006,Unknown,
+Q-0007,Object-oriented design understanding,Design,OOP,LLD,Medium (round-level),Easy,1,Mastercard,Drafted,solutions/design.md#Q-0007,Unknown,Exact questions not reported
+Q-0008,Spring Boot annotations,Spring,Core annotations,Spring Boot,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/spring.md#Q-0008,Unknown,
+Q-0009,Spring vs Spring Boot (and what changed in Spring Boot 3),Spring,Framework vs Boot,Spring Boot,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/spring.md#Q-0009,Unknown,Wording ambiguous - see solution
+Q-0010,Spring Security,Spring,Security,Spring Boot,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/spring.md#Q-0010,Unknown,Exact sub-questions not reported
+Q-0011,JPA / Hibernate,Spring,Persistence,Spring Boot,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/spring.md#Q-0011,Unknown,Exact sub-questions not reported
+Q-0012,@Autowired (field) injection vs constructor injection,Spring,Dependency Injection,Spring Boot,Unknown (round described as intense),Easy,1,Mastercard,Drafted,solutions/spring.md#Q-0012,Unknown,
+Q-0013,Old vs new Java features (streams / lambdas / modern Java),Java Core,Language evolution,Java,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/java-core.md#Q-0013,Unknown,Related to Q-0003
+Q-0014,Garbage collection,Java Core,GC,Java,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/java-core.md#Q-0014,Unknown,
+Q-0015,Types of locks in Java and when to use each,Concurrency,Locks,Java,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/concurrency.md#Q-0015,Unknown,
+Q-0016,Scenario: where to place locks in a multi-threaded situation,Concurrency,Lock design,Java,Unknown (round described as intense),Hard,1,Mastercard,Drafted,solutions/concurrency.md#Q-0016,Unknown,Actual scenarios not reported
+Q-0017,Project deep dive with focus on performance improvements,Behavioral,Project discussion,Behavioral,Unknown,Medium,1,Mastercard,Needs-user-input,companies/mastercard.md#behavioral-and-managerial-questions,Unknown,
+Q-0018,Justify a reported metric ('30% improvement in query performance'),Behavioral,Impact quantification,Behavioral,Unknown,Hard,1,Mastercard,Needs-user-input,companies/mastercard.md#behavioral-and-managerial-questions,Unknown,Candidate believed weak R2 may have caused rejection
+Q-0019,Design patterns with examples,Design,Design patterns,LLD,Unknown (round described as intense),Medium,1,Mastercard,Drafted,solutions/design.md#Q-0019,Unknown,
+Q-0020,DSA: HashMap + sorting problem (exact problem unknown),DSA,Hashing + Sorting,DSA,Easy/Medium ('moderate/easy'),Easy/Medium,1,Mastercard,Needs-details,solutions/dsa.md#Q-0020,Unknown,Practice proxy solved; real problem not reported
+Q-0021,How thread pools are created (ThreadPoolExecutor internals),Concurrency,Executors,Java,Unknown,Medium,1,Mastercard,Drafted,solutions/concurrency.md#Q-0021,Unknown,
+Q-0022,Do threads in a pool 'actually die'?,Concurrency,Executors,Java,Unknown,Medium,1,Mastercard,Drafted,solutions/concurrency.md#Q-0022,Unknown,
+Q-0023,Thread lifecycle and thread management,Concurrency,Thread lifecycle,Java,Unknown,Easy,1,Mastercard,Drafted,solutions/concurrency.md#Q-0023,Unknown,

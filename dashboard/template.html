@@ -1,0 +1,829 @@
+<title>Interview Intelligence</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: case-file console. Summary strip, tabbed workspace, dense question ledger with a slide-in detail sheet. */
+:root {
+  --bg: #F3F5F8;
+  --surface: #FFFFFF;
+  --sunken: #E9EDF2;
+  --line: #D5DBE3;
+  --fg: #172030;
+  --muted: #586377;
+  --accent: #1D5BA8;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E1EBF7;
+  --code-bg: #EEF1F5;
+
+  --st-none: #9AA3B2;
+  --st-learning: #B8740F;
+  --st-confident: #11807E;
+  --st-mastered: #2E7D35;
+  --st-input: #B03F68;
+  --st-details: #6B54A8;
+
+  --font-display: "Bricolage Grotesque", "IBM Plex Sans", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --r: 8px;
+  --shadow: 0 10px 40px rgba(18, 28, 45, .18);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141B; --surface: #161C25; --sunken: #0C1016; --line: #283141;
+    --fg: #E4E9F0; --muted: #96A1B3; --accent: #74A9EE; --accent-ink: #0A1220;
+    --accent-soft: #1A2A41; --code-bg: #0E131A;
+    --st-none: #6D7789; --st-learning: #E0A246; --st-confident: #3DBDB9;
+    --st-mastered: #6CC072; --st-input: #E57AA0; --st-details: #A891E6;
+    --shadow: 0 10px 40px rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10141B; --surface: #161C25; --sunken: #0C1016; --line: #283141;
+  --fg: #E4E9F0; --muted: #96A1B3; --accent: #74A9EE; --accent-ink: #0A1220;
+  --accent-soft: #1A2A41; --code-bg: #0E131A;
+  --st-none: #6D7789; --st-learning: #E0A246; --st-confident: #3DBDB9;
+  --st-mastered: #6CC072; --st-input: #E57AA0; --st-details: #A891E6;
+  --shadow: 0 10px 40px rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  margin: 0;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1280px; margin: 0 auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--font-mono); font-size: .86em; }
+.muted { color: var(--muted); }
+
+/* Header */
+.top { background: var(--surface); border-bottom: 1px solid var(--line); }
+.top .wrap { padding-block: 18px 0; display: grid; gap: 14px; }
+.brand-row { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: end; justify-content: space-between; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: -.01em; margin: 0; line-height: 1.1; text-wrap: balance; }
+.sub { color: var(--muted); font-size: .88rem; margin: 4px 0 0; }
+.top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 7px 12px; cursor: pointer; font-size: .88rem; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:disabled { opacity: .5; cursor: default; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; }
+@media (max-width: 520px) { .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); } .progress-block { grid-column: 1 / -1; } .stat span { font-size: .66rem; } }
+.stat { min-width: 0; }
+.stat b { font-family: var(--font-display); font-size: 1.35rem; font-variant-numeric: tabular-nums; display: block; line-height: 1.1; }
+.stat span { color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
+.progress-block { flex: 1 1 280px; min-width: 0; display: grid; gap: 6px; }
+.progress-label { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
+.bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--sunken); }
+.bar i { display: block; height: 100%; transition: width .3s; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .78rem; color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+
+.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tab { border: 0; background: none; padding: 10px 14px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; font-weight: 500; white-space: nowrap; }
+.tab[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+
+main .wrap { padding-block: 20px 60px; }
+
+/* Questions view */
+.qlayout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 820px) { .qlayout { grid-template-columns: minmax(0, 1fr); } }
+.filters { display: grid; gap: 12px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); }
+@media (max-width: 820px) { .filters { position: static; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); } .filters .full { grid-column: 1 / -1; } }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+.field input, .field select, textarea { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 8px 10px; min-width: 0; }
+.result-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; font-size: .85rem; color: var(--muted); }
+
+.ledger { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.qrow { display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); cursor: pointer; width: 100%; text-align: left; background: none; border-left: 0; border-right: 0; border-top: 0; }
+.qrow:last-child { border-bottom: 0; }
+.qrow:hover { background: var(--accent-soft); }
+.qrow .qid { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.qrow .qtitle { font-weight: 500; min-width: 0; }
+.qrow .qtags { grid-column: 2; display: flex; flex-wrap: wrap; gap: 6px; }
+.qrow .qright { grid-row: 1 / span 2; grid-column: 3; display: grid; justify-items: end; gap: 6px; }
+@media (max-width: 520px) {
+  .qrow { grid-template-columns: minmax(0, 1fr); }
+  .qrow .qtags, .qrow .qright { grid-column: 1; grid-row: auto; justify-items: start; }
+  .qrow .qright { display: flex; gap: 8px; }
+}
+.chip { font-size: .74rem; padding: 2px 8px; border-radius: 999px; background: var(--sunken); color: var(--muted); white-space: nowrap; }
+.freq { font-family: var(--font-mono); font-size: .78rem; color: var(--fg); font-variant-numeric: tabular-nums; }
+.pill { font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
+.mine { display: inline-flex; align-items: center; font-size: .78rem; color: var(--muted); white-space: nowrap; }
+.empty { padding: 36px 20px; text-align: center; color: var(--muted); }
+
+/* Drawer */
+.scrim { position: fixed; inset: 0; background: rgba(10, 16, 26, .4); z-index: 40; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(760px, 100%); background: var(--surface); z-index: 50; box-shadow: var(--shadow); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.drawer-head { display: flex; gap: 12px; align-items: start; justify-content: space-between; padding: 18px 22px 14px; border-bottom: 1px solid var(--line); }
+.drawer-head h2 { font-family: var(--font-display); font-size: 1.3rem; margin: 2px 0 0; line-height: 1.2; text-wrap: balance; }
+.drawer-body { overflow-y: auto; padding: 18px 22px 40px; display: grid; gap: 22px; align-content: start; }
+.drawer-nav { display: flex; gap: 6px; flex-shrink: 0; }
+.kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px 18px; }
+.kv div { min-width: 0; }
+.kv dt { font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+.kv dd { margin: 2px 0 0; font-size: .9rem; overflow-wrap: anywhere; }
+h3.sec { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; background: var(--surface); padding: 7px 12px; cursor: pointer; font-size: .85rem; border-right: 1px solid var(--line); display: inline-flex; align-items: center; }
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); font-weight: 600; }
+.saved { font-size: .78rem; color: var(--muted); margin-top: 4px; min-height: 1.2em; }
+.appear { border-left: 3px solid var(--line); padding: 4px 0 4px 12px; display: grid; gap: 4px; }
+.appear q { font-style: italic; }
+.appear q::before, .appear q::after { content: '"'; }
+
+/* Markdown */
+.md { min-width: 0; }
+.md > *:first-child { margin-top: 0; }
+.md h1 { font-size: 1.5rem; }
+.md h2 { font-family: var(--font-display); font-size: 1.2rem; margin: 1.6em 0 .5em; text-wrap: balance; }
+.md h3 { font-size: 1rem; margin: 1.3em 0 .4em; }
+.md p, .md li { max-width: 72ch; }
+.md a { color: var(--accent); }
+.md code { font-family: var(--font-mono); font-size: .85em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+.md pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; overflow-x: auto; font-size: .82rem; line-height: 1.55; }
+.md pre code { background: none; padding: 0; font-size: inherit; }
+.md .tablewrap { overflow-x: auto; margin: 1em 0; }
+.md table { border-collapse: collapse; font-size: .86rem; min-width: 100%; }
+.md th, .md td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+.md th { background: var(--sunken); font-weight: 600; }
+.md blockquote { margin: 1em 0; padding: 8px 14px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 6px 6px 0; }
+.md blockquote p { margin: .3em 0; }
+.md hr { border: 0; border-top: 1px solid var(--line); margin: 1.5em 0; }
+.qlink { font-family: var(--font-mono); font-size: .88em; color: var(--accent); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; background: none; border: 0; padding: 0; }
+/* highlight.js tokens, themed */
+.hljs-keyword, .hljs-built_in, .hljs-type { color: var(--accent); font-weight: 600; }
+.hljs-string, .hljs-regexp { color: var(--st-confident); }
+.hljs-comment { color: var(--muted); font-style: italic; }
+.hljs-number, .hljs-literal { color: var(--st-learning); }
+.hljs-meta, .hljs-annotation { color: var(--st-input); }
+.hljs-title, .hljs-title.function_ { color: var(--st-details); }
+
+/* Companies & plans */
+.split { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 820px) { .split { grid-template-columns: minmax(0, 1fr); } }
+.picker { display: grid; gap: 6px; }
+.pick { text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; }
+.pick[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.pick small { color: var(--muted); }
+.paper { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 24px clamp(16px, 4vw, 36px); min-width: 0; }
+details.raw { border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; background: var(--surface); }
+details.raw summary { cursor: pointer; font-weight: 500; }
+.evidence { font-size: .82rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; padding: 8px 12px; }
+
+/* Topics */
+.topic-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 900px) { .topic-grid { grid-template-columns: minmax(0, 1fr); } }
+.hbars { display: grid; gap: 10px; }
+.hb { display: grid; grid-template-columns: minmax(90px, 160px) minmax(0, 1fr) 2.5em; gap: 10px; align-items: center; font-size: .88rem; }
+.hb-track { height: 14px; background: var(--sunken); border-radius: 3px; overflow: hidden; display: flex; }
+.hb-track i { display: block; height: 100%; }
+.hb b { font-family: var(--font-mono); font-size: .8rem; text-align: right; font-variant-numeric: tabular-nums; }
+.topic-card { border-top: 1px solid var(--line); padding: 14px 0; display: grid; gap: 6px; }
+.topic-card h4 { margin: 0; font-size: .95rem; }
+.gaps { display: flex; flex-wrap: wrap; gap: 6px; }
+.gap-chip { font-size: .8rem; padding: 3px 10px; border-radius: 999px; border: 1px dashed var(--st-input); color: var(--st-input); }
+
+/* Drill */
+.drill { max-width: 760px; margin: 0 auto; display: grid; gap: 18px; }
+.drill-setup { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: end; }
+.card-q { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 28px clamp(18px, 4vw, 36px); display: grid; gap: 16px; }
+.card-q .prompt { font-family: var(--font-display); font-size: clamp(1.25rem, 3.4vw, 1.7rem); line-height: 1.25; font-weight: 600; text-wrap: balance; }
+.timer { height: 6px; background: var(--sunken); border-radius: 3px; overflow: hidden; }
+.timer i { display: block; height: 100%; background: var(--accent); width: 100%; }
+.timer.low i { background: var(--st-input); }
+.drill-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.rate { display: flex; gap: 8px; flex-wrap: wrap; }
+.secs { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); }
+.reveal { border-top: 1px solid var(--line); padding-top: 14px; max-height: 420px; overflow-y: auto; }
+.tbl-wrap { overflow-x: auto; }
+table.plain { border-collapse: collapse; width: 100%; font-size: .88rem; }
+table.plain th, table.plain td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+table.plain th { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+
+/* Modal */
+.modal { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 16px; }
+.modal-card { background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); width: min(620px, 100%); max-height: 90%; overflow-y: auto; padding: 22px; display: grid; gap: 14px; }
+.modal-card h2 { font-family: var(--font-display); margin: 0; font-size: 1.25rem; }
+.modal-card textarea { min-height: 140px; font-family: var(--font-mono); font-size: .8rem; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 9px 16px; border-radius: 6px; z-index: 80; font-size: .88rem; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand-row">
+      <div>
+        <h1>Interview Intelligence</h1>
+        <p class="sub" id="subline"></p>
+      </div>
+      <div class="top-actions">
+        <button class="btn" id="btn-backup" type="button">Back up progress</button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" data-view="questions" id="tab-questions">Questions</button>
+      <button class="tab" role="tab" data-view="companies" id="tab-companies">Companies</button>
+      <button class="tab" role="tab" data-view="topics" id="tab-topics">Topics</button>
+      <button class="tab" role="tab" data-view="drill" id="tab-drill">Drill</button>
+      <button class="tab" role="tab" data-view="plans" id="tab-plans">Plans</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section id="view-questions" class="view" hidden>
+      <div class="qlayout">
+        <aside class="filters" aria-label="Filters">
+          <div class="field full"><label for="f-search">Search</label><input id="f-search" type="search" placeholder="executor, lock, N+1, Q-0016…"></div>
+          <div class="field"><label for="f-company">Company</label><select id="f-company"></select></div>
+          <div class="field"><label for="f-topic">Topic</label><select id="f-topic"></select></div>
+          <div class="field"><label for="f-type">Type</label><select id="f-type"></select></div>
+          <div class="field"><label for="f-sol">Solution status</label><select id="f-sol"></select></div>
+          <div class="field"><label for="f-mine">My progress</label><select id="f-mine"></select></div>
+          <div class="field"><label for="f-sort">Sort</label>
+            <select id="f-sort">
+              <option value="freq">Most asked first</option>
+              <option value="id">Question ID</option>
+              <option value="mine">Least prepared first</option>
+            </select></div>
+          <button class="btn full" id="f-reset" type="button">Clear filters</button>
+        </aside>
+        <div style="min-width:0">
+          <div class="result-meta"><span id="result-count"></span><span>Frequency counts cover this dataset only.</span></div>
+          <div class="ledger" id="ledger"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-companies" class="view" hidden>
+      <div class="split">
+        <div class="picker" id="company-picker"></div>
+        <div style="display:grid;gap:16px;min-width:0" id="company-body"></div>
+      </div>
+    </section>
+
+    <section id="view-topics" class="view" hidden>
+      <div class="topic-grid" id="topics-body"></div>
+    </section>
+
+    <section id="view-drill" class="view" hidden>
+      <div class="drill" id="drill-body"></div>
+    </section>
+
+    <section id="view-plans" class="view" hidden>
+      <div id="plans-body"></div>
+    </section>
+  </div>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="d-title" hidden>
+  <div class="drawer-head">
+    <div style="min-width:0">
+      <div class="mono muted" id="d-qid"></div>
+      <h2 id="d-title"></h2>
+    </div>
+    <div class="drawer-nav">
+      <button class="btn" id="d-prev" type="button" aria-label="Previous question">&larr;</button>
+      <button class="btn" id="d-next" type="button" aria-label="Next question">&rarr;</button>
+      <button class="btn" id="d-close" type="button">Close</button>
+    </div>
+  </div>
+  <div class="drawer-body" id="d-body"></div>
+</aside>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <h2 id="m-title">Back up progress</h2>
+    <p class="muted" style="margin:0">Your progress and notes are saved in this browser only. The Claude artifact and your GitHub Pages site keep separate copies. Copy this text to move progress between them, or paste a backup below and import it.</p>
+    <div class="field"><label for="m-export">Your progress (copy this)</label><textarea id="m-export" readonly></textarea></div>
+    <div><button class="btn" id="m-copy" type="button">Copy</button></div>
+    <div class="field"><label for="m-import">Paste a backup to import</label><textarea id="m-import" placeholder='{"Q-0005":{"status":"Learning","notes":"…"}}'></textarea></div>
+    <p class="saved" id="m-msg"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="btn" id="m-close" type="button">Done</button>
+      <button class="btn primary" id="m-import-btn" type="button">Import and merge</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script type="application/json" id="kb-data">__KB_DATA__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const KB = JSON.parse(document.getElementById("kb-data").textContent);
+  const Q = KB.questions;
+  const byId = Object.fromEntries(Q.map(q => [q.qid, q]));
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  /* ---------- storage (per browser, best effort) ---------- */
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+  const PKEY = "iintel-progress-v1", FKEY = "iintel-filters-v1", DKEY = "iintel-drill-v1";
+  let progress = store.get(PKEY, {});
+  const MY = ["Not started", "Learning", "Confident", "Mastered"];
+  const MY_COLOR = { "Not started": "var(--st-none)", "Learning": "var(--st-learning)", "Confident": "var(--st-confident)", "Mastered": "var(--st-mastered)" };
+  const SOL_COLOR = { "Queued": "var(--st-none)", "Drafted": "var(--st-learning)", "Reviewed": "var(--st-confident)", "Mastered": "var(--st-mastered)", "Needs-user-input": "var(--st-input)", "Needs-details": "var(--st-details)" };
+  const myStatus = qid => (progress[qid] && progress[qid].status) || "Not started";
+  const saveProgress = () => store.set(PKEY, progress);
+
+  function toast(msg) {
+    const t = $("#toast"); t.textContent = msg; t.hidden = false;
+    clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2200);
+  }
+
+  /* ---------- markdown ---------- */
+  function renderMd(el, text) {
+    let html;
+    if (window.marked) {
+      html = window.marked.parse(text || "", { gfm: true });
+      if (window.DOMPurify) html = window.DOMPurify.sanitize(html);
+    } else {
+      html = "<pre style=\"white-space:pre-wrap\">" + esc(text) + "</pre>";
+    }
+    el.innerHTML = html;
+    el.classList.add("md");
+    el.querySelectorAll("table").forEach(t => { const w = document.createElement("div"); w.className = "tablewrap"; t.replaceWith(w); w.appendChild(t); });
+    if (window.hljs) el.querySelectorAll("pre code").forEach(c => { try { window.hljs.highlightElement(c); } catch (e) {} });
+    el.querySelectorAll("a").forEach(a => {
+      const href = a.getAttribute("href") || "";
+      const m = href.match(/#(Q-\d{4})$/);
+      if (m) { a.addEventListener("click", e => { e.preventDefault(); openQuestion(m[1]); }); }
+      else if (/^https?:/.test(href)) { a.target = "_blank"; a.rel = "noopener"; }
+      else { a.removeAttribute("href"); }
+    });
+    linkifyQids(el);
+  }
+  function linkifyQids(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => (n.parentElement.closest("pre, code, a, button, h2") || !/Q-\d{4}/.test(n.nodeValue)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+    });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(n => {
+      const frag = document.createDocumentFragment();
+      n.nodeValue.split(/(Q-\d{4})/).forEach(part => {
+        if (/^Q-\d{4}$/.test(part) && byId[part]) {
+          const b = document.createElement("button"); b.type = "button"; b.className = "qlink"; b.textContent = part;
+          b.title = byId[part].canonical_title; b.addEventListener("click", () => openQuestion(part)); frag.appendChild(b);
+        } else frag.appendChild(document.createTextNode(part));
+      });
+      n.replaceWith(frag);
+    });
+  }
+
+  /* ---------- header ---------- */
+  function renderHeader() {
+    const companies = new Set(Q.flatMap(q => q.companies.split(";").map(s => s.trim()).filter(Boolean)));
+    const apps = Q.reduce((n, q) => n + q.appearances.length, 0);
+    $("#subline").textContent = `SDE-2 · Java backend prep · data built ${KB.generated}`;
+    const counts = Object.fromEntries(MY.map(s => [s, 0]));
+    Q.forEach(q => counts[myStatus(q.qid)]++);
+    const pct = s => (counts[s] / Q.length * 100).toFixed(1);
+    const ready = counts["Confident"] + counts["Mastered"];
+    $("#stats").innerHTML = `
+      <div class="stat"><b>${Q.length}</b><span>Questions</span></div>
+      <div class="stat"><b>${apps}</b><span>Times asked</span></div>
+      <div class="stat"><b>${KB.experiences.length}</b><span>Experiences</span></div>
+      <div class="stat"><b>${companies.size}</b><span>Companies</span></div>
+      <div class="progress-block">
+        <div class="progress-label"><span>My readiness</span><span>${ready} of ${Q.length} confident or mastered</span></div>
+        <div class="bar" role="img" aria-label="${MY.map(s => s + " " + counts[s]).join(", ")}">${MY.slice().reverse().filter(s => s !== "Not started").map(s => `<i style="width:${pct(s)}%;background:${MY_COLOR[s]}"></i>`).join("")}</div>
+        <div class="legend">${MY.map(s => `<span><span class="dot" style="background:${MY_COLOR[s]}"></span>${s} ${counts[s]}</span>`).join("")}</div>
+      </div>`;
+  }
+
+  /* ---------- questions ---------- */
+  const uniq = arr => [...new Set(arr.filter(Boolean))].sort();
+  const optionList = (sel, label, values) => { sel.innerHTML = `<option value="">${label}</option>` + values.map(v => `<option>${esc(v)}</option>`).join(""); };
+  function initFilters() {
+    optionList($("#f-company"), "All companies", uniq(Q.flatMap(q => q.companies.split(";").map(s => s.trim()))));
+    optionList($("#f-topic"), "All topics", uniq(Q.map(q => q.topic)));
+    optionList($("#f-type"), "All types", uniq(Q.map(q => q.type)));
+    optionList($("#f-sol"), "Any status", uniq(Q.map(q => q.solution_status)));
+    optionList($("#f-mine"), "Any progress", MY);
+    const saved = store.get(FKEY, {});
+    ["search", "company", "topic", "type", "sol", "mine", "sort"].forEach(k => {
+      const el = $("#f-" + k);
+      if (saved[k] !== undefined) el.value = saved[k];
+      el.addEventListener("input", () => { saveFilters(); renderLedger(); });
+    });
+    $("#f-reset").addEventListener("click", () => {
+      ["search", "company", "topic", "type", "sol", "mine"].forEach(k => { $("#f-" + k).value = ""; });
+      $("#f-sort").value = "freq"; saveFilters(); renderLedger();
+    });
+  }
+  function saveFilters() {
+    const f = {}; ["search", "company", "topic", "type", "sol", "mine", "sort"].forEach(k => { f[k] = $("#f-" + k).value; }); store.set(FKEY, f);
+  }
+  let visible = [];
+  function filtered() {
+    const s = $("#f-search").value.trim().toLowerCase();
+    const c = $("#f-company").value, t = $("#f-topic").value, ty = $("#f-type").value, so = $("#f-sol").value, mi = $("#f-mine").value;
+    let list = Q.filter(q => {
+      if (c && !q.companies.includes(c)) return false;
+      if (t && q.topic !== t) return false;
+      if (ty && q.type !== ty) return false;
+      if (so && q.solution_status !== so) return false;
+      if (mi && myStatus(q.qid) !== mi) return false;
+      if (s) {
+        const hay = [q.qid, q.canonical_title, q.topic, q.subtopic, q.type, q.notes, q.appearances.map(a => a.original_wording).join(" "), q.solution_md, (progress[q.qid] || {}).notes].join(" ").toLowerCase();
+        if (!s.split(/\s+/).every(w => hay.includes(w))) return false;
+      }
+      return true;
+    });
+    const sort = $("#f-sort").value;
+    if (sort === "freq") list.sort((a, b) => (+b.dataset_frequency - +a.dataset_frequency) || a.qid.localeCompare(b.qid));
+    else if (sort === "mine") list.sort((a, b) => (MY.indexOf(myStatus(a.qid)) - MY.indexOf(myStatus(b.qid))) || (+b.dataset_frequency - +a.dataset_frequency));
+    else list.sort((a, b) => a.qid.localeCompare(b.qid));
+    return list;
+  }
+  function renderLedger() {
+    visible = filtered();
+    $("#result-count").textContent = `${visible.length} of ${Q.length} questions`;
+    const led = $("#ledger");
+    if (!visible.length) { led.innerHTML = `<div class="empty">No questions match these filters. Clear a filter or try a shorter search.</div>`; return; }
+    led.innerHTML = visible.map(q => {
+      const ms = myStatus(q.qid);
+      const rounds = uniq(q.appearances.map(a => a.round)).join(", ");
+      return `<button class="qrow" type="button" data-qid="${q.qid}">
+        <span class="qid">${q.qid}</span>
+        <span class="qtitle">${esc(q.canonical_title)}</span>
+        <span class="qright">
+          <span class="pill" style="color:${SOL_COLOR[q.solution_status] || "var(--muted)"}">${esc(q.solution_status)}</span>
+          <span class="mine"><span class="dot" style="background:${MY_COLOR[ms]}"></span>${ms}</span>
+        </span>
+        <span class="qtags">
+          <span class="freq" title="Appearances in this dataset">×${esc(q.dataset_frequency)}</span>
+          <span class="chip">${esc(q.topic)} · ${esc(q.subtopic)}</span>
+          <span class="chip">${esc(q.type)}</span>
+          <span class="chip">${esc(q.companies)} ${esc(rounds)}</span>
+          <span class="chip">Est. ${esc(q.difficulty_estimated)}</span>
+        </span>
+      </button>`;
+    }).join("");
+    led.querySelectorAll(".qrow").forEach(r => r.addEventListener("click", () => openQuestion(r.dataset.qid)));
+  }
+
+  /* ---------- question detail ---------- */
+  let openId = null, lastFocus = null;
+  function openQuestion(qid) {
+    const q = byId[qid]; if (!q) return;
+    if (!openId) lastFocus = document.activeElement;
+    openId = qid;
+    $("#d-qid").textContent = `${q.qid} · ${q.type}`;
+    $("#d-title").textContent = q.canonical_title;
+    const ms = myStatus(qid);
+    const body = $("#d-body");
+    body.innerHTML = `
+      <dl class="kv">
+        <div><dt>Topic</dt><dd>${esc(q.topic)} · ${esc(q.subtopic)}</dd></div>
+        <div><dt>Asked at</dt><dd>${esc(q.companies)}</dd></div>
+        <div><dt>Times asked (dataset)</dt><dd>${esc(q.dataset_frequency)}</dd></div>
+        <div><dt>Difficulty reported</dt><dd>${esc(q.difficulty_reported || "Unknown")}</dd></div>
+        <div><dt>Difficulty (my estimate)</dt><dd>${esc(q.difficulty_estimated || "Unknown")}</dd></div>
+        <div><dt>Solution status</dt><dd><span class="pill" style="color:${SOL_COLOR[q.solution_status] || "var(--muted)"}">${esc(q.solution_status)}</span></dd></div>
+        <div><dt>Last reviewed</dt><dd>${esc(q.last_reviewed || "Unknown")}</dd></div>
+        ${q.notes ? `<div><dt>Note</dt><dd>${esc(q.notes)}</dd></div>` : ""}
+      </dl>
+      <section>
+        <h3 class="sec">My progress</h3>
+        <div class="seg" role="group" aria-label="My progress">${MY.map(s => `<button type="button" data-s="${s}" aria-pressed="${s === ms}"><span class="dot" style="background:${MY_COLOR[s]}"></span>${s}</button>`).join("")}</div>
+        <div class="field" style="margin-top:12px"><label for="d-notes">My notes</label><textarea id="d-notes" rows="3" placeholder="Your own answer outline, weak spots, links…">${esc((progress[qid] || {}).notes || "")}</textarea></div>
+        <div class="saved" id="d-saved"></div>
+      </section>
+      <section>
+        <h3 class="sec">Where it was asked</h3>
+        <div style="display:grid;gap:12px">${q.appearances.map(a => `
+          <div class="appear">
+            <div><span class="mono muted">${esc(a.app_id)} · ${esc(a.exp_id)}</span> — ${esc(a.company)}, ${esc(a.role)}, <b>${esc(a.round)}</b> (${esc(a.round_type)})</div>
+            <q>${esc(a.original_wording)}</q>
+            <div class="muted" style="font-size:.85rem">Follow-ups: ${esc(a.reported_hints_followups || "None reported")} · Date: ${esc(a.interview_date || "Unknown")}</div>
+          </div>`).join("")}</div>
+      </section>
+      <section>
+        <h3 class="sec">Solution and revision notes</h3>
+        <div id="d-sol"></div>
+      </section>`;
+    if (q.solution_md) renderMd($("#d-sol"), q.solution_md);
+    else $("#d-sol").innerHTML = `<p class="muted">No solution written yet. Ask Claude to draft one for ${q.qid}.</p>`;
+    body.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+      progress[qid] = Object.assign({}, progress[qid], { status: b.dataset.s, updated: new Date().toISOString().slice(0, 10) });
+      const ok = saveProgress();
+      body.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      $("#d-saved").textContent = ok ? "Saved in this browser." : "Couldn't save: this browser is blocking storage. Use Back up progress to keep a copy.";
+      renderHeader(); renderLedger();
+    }));
+    let t;
+    $("#d-notes").addEventListener("input", e => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        progress[qid] = Object.assign({}, progress[qid], { notes: e.target.value, updated: new Date().toISOString().slice(0, 10) });
+        $("#d-saved").textContent = saveProgress() ? "Notes saved in this browser." : "Couldn't save notes: storage is blocked here.";
+      }, 400);
+    });
+    const list = visible.length ? visible : Q;
+    const idx = list.findIndex(x => x.qid === qid);
+    $("#d-prev").disabled = idx <= 0; $("#d-next").disabled = idx < 0 || idx >= list.length - 1;
+    $("#d-prev").onclick = () => idx > 0 && openQuestion(list[idx - 1].qid);
+    $("#d-next").onclick = () => idx >= 0 && idx < list.length - 1 && openQuestion(list[idx + 1].qid);
+    $("#scrim").hidden = false; $("#drawer").hidden = false;
+    body.scrollTop = 0; $("#d-close").focus();
+  }
+  function closeQuestion() {
+    openId = null; $("#scrim").hidden = true; $("#drawer").hidden = true;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $("#d-close").addEventListener("click", closeQuestion);
+  $("#scrim").addEventListener("click", closeQuestion);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") { if (!$("#modal").hidden) closeModal(); else if (openId) closeQuestion(); }
+  });
+
+  /* ---------- companies ---------- */
+  let companySlug = KB.companies[0] ? KB.companies[0].slug : null;
+  function renderCompanies() {
+    const picker = $("#company-picker"), body = $("#company-body");
+    if (!KB.companies.length) { picker.innerHTML = ""; body.innerHTML = `<div class="paper empty">No company guides yet. Share an interview experience with Claude to create one.</div>`; return; }
+    picker.innerHTML = KB.companies.map(c => {
+      const n = KB.experiences.filter(e => (e.meta.company || "").toLowerCase() === c.name.toLowerCase()).length;
+      const nq = Q.filter(q => q.companies.toLowerCase().includes(c.name.toLowerCase())).length;
+      return `<button class="pick" type="button" data-slug="${c.slug}" aria-pressed="${c.slug === companySlug}"><b>${esc(c.name)}</b><small>${n} experience${n === 1 ? "" : "s"} · ${nq} questions</small></button>`;
+    }).join("");
+    picker.querySelectorAll(".pick").forEach(b => b.addEventListener("click", () => { companySlug = b.dataset.slug; renderCompanies(); }));
+    const c = KB.companies.find(x => x.slug === companySlug);
+    const exps = KB.experiences.filter(e => (e.meta.company || "").toLowerCase() === c.name.toLowerCase());
+    body.innerHTML = `
+      ${exps.length < 3 ? `<div class="evidence">Evidence level: ${exps.length} experience${exps.length === 1 ? "" : "s"}. Treat patterns here as one candidate's report, not the company's standard process.</div>` : ""}
+      <article class="paper" id="company-md"></article>
+      <section style="display:grid;gap:10px">
+        <h3 class="sec">Raw experiences</h3>
+        ${exps.map(e => `<details class="raw"><summary><span class="mono">${esc(e.id)}</span> · ${esc(e.meta.role || "Role unknown")} · Outcome: ${esc(e.meta.outcome || "Unknown")}</summary><div class="exp-md" data-id="${esc(e.id)}"></div></details>`).join("")}
+      </section>`;
+    renderMd($("#company-md"), c.md);
+    body.querySelectorAll(".exp-md").forEach(el => {
+      const e = KB.experiences.find(x => x.id === el.dataset.id);
+      const meta = Object.entries(e.meta).map(([k, v]) => `| ${k} | ${String(v).replace(/\|/g, "/")} |`).join("\n");
+      renderMd(el, `| Field | Value |\n|---|---|\n${meta}\n\n${e.body}`);
+    });
+  }
+
+  /* ---------- topics ---------- */
+  const TARGET_AREAS = ["Java Core", "Spring", "Concurrency", "DSA", "DBMS/SQL", "Operating Systems", "Computer Networks", "REST APIs", "Microservices", "LLD", "HLD", "Behavioral", "Design"];
+  function renderTopics() {
+    const topics = {};
+    Q.forEach(q => {
+      const t = topics[q.topic] ||= { apps: 0, qs: [], subs: {} };
+      t.apps += q.appearances.length; t.qs.push(q);
+      (t.subs[q.subtopic] ||= []).push(q);
+    });
+    const rows = Object.entries(topics).sort((a, b) => b[1].apps - a[1].apps);
+    const max = Math.max(...rows.map(r => r[1].apps), 1);
+    const typeSeen = new Set(Q.map(q => q.type));
+    const gaps = TARGET_AREAS.filter(a => !topics[a] && !typeSeen.has(a));
+    $("#topics-body").innerHTML = `
+      <section class="paper" style="display:grid;gap:16px">
+        <div><h3 class="sec">Times asked by topic</h3><p class="muted" style="margin:0;font-size:.85rem">Bar length = appearances in collected experiences. Colour = your progress on that topic's questions.</p></div>
+        <div class="hbars">${rows.map(([name, t]) => {
+          const segs = MY.slice().reverse().map(s => {
+            const apps = t.qs.filter(q => myStatus(q.qid) === s).reduce((n, q) => n + q.appearances.length, 0);
+            return apps ? `<i style="width:${apps / max * 100}%;background:${MY_COLOR[s]}" title="${s}: ${apps}"></i>` : "";
+          }).join("");
+          return `<div class="hb"><span>${esc(name)}</span><span class="hb-track">${segs}</span><b>${t.apps}</b></div>`;
+        }).join("")}</div>
+        <div class="legend">${MY.map(s => `<span><span class="dot" style="background:${MY_COLOR[s]}"></span>${s}</span>`).join("")}</div>
+        <div>
+          <h3 class="sec">Not yet seen in any experience</h3>
+          <div class="gaps">${gaps.length ? gaps.map(g => `<span class="gap-chip">${esc(g)}</span>`).join("") : `<span class="muted">Every target area has at least one question.</span>`}</div>
+          <p class="muted" style="font-size:.82rem;margin:8px 0 0">These are your target areas with no evidence yet. Absence here means no data, not that companies skip them.</p>
+        </div>
+      </section>
+      <section style="min-width:0">${rows.map(([name, t]) => `
+        <div class="topic-card">
+          <h4>${esc(name)} <span class="muted" style="font-weight:400">· ${t.qs.length} questions</span></h4>
+          ${Object.entries(t.subs).map(([sub, qs]) => `<div style="font-size:.88rem"><span class="muted">${esc(sub)}:</span> ${qs.map(q => `<button type="button" class="qlink" data-q="${q.qid}" title="${esc(q.canonical_title)}">${q.qid}</button>`).join(" ")}</div>`).join("")}
+        </div>`).join("")}
+      </section>`;
+    $("#topics-body").querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => openQuestion(b.dataset.q)));
+  }
+
+  /* ---------- drill ---------- */
+  const drill = { deck: [], i: 0, results: [], timer: null, left: 0, secs: 30, revealed: false };
+  function drillSources() {
+    const reported = Q.map(q => ({ text: q.canonical_title, qid: q.qid, kind: "Reported", company: q.companies }));
+    const mocks = KB.companies.flatMap(c => c.mocks.map(m => ({ text: m, qid: null, kind: "Generated mock", company: c.name })));
+    return { reported, mocks };
+  }
+  function renderDrillSetup() {
+    stopTimer();
+    const { reported, mocks } = drillSources();
+    const last = store.get(DKEY, null);
+    $("#drill-body").innerHTML = `
+      <div class="paper" style="display:grid;gap:16px">
+        <div>
+          <h3 class="sec">Rapid-fire practice</h3>
+          <p style="margin:0;max-width:62ch">Modelled on the Mastercard Round 2 style, where a new question came every few seconds. Answer out loud before the timer runs out, then rate yourself. Ratings for reported questions can update your progress.</p>
+        </div>
+        <div class="drill-setup">
+          <div class="field"><label for="dr-src">Questions</label>
+            <select id="dr-src">
+              <option value="mix">Reported + generated mock (${reported.length + mocks.length})</option>
+              <option value="reported">Reported questions only (${reported.length})</option>
+              <option value="mocks">Generated mock only (${mocks.length})</option>
+              <option value="weak">My weakest reported questions</option>
+            </select></div>
+          <div class="field"><label for="dr-topic">Topic</label><select id="dr-topic"><option value="">All topics</option>${uniq(Q.map(q => q.topic)).map(t => `<option>${esc(t)}</option>`).join("")}</select></div>
+          <div class="field"><label for="dr-secs">Seconds per question</label>
+            <select id="dr-secs"><option>20</option><option selected>30</option><option>45</option><option>60</option></select></div>
+          <div class="field"><label for="dr-n">Number of questions</label>
+            <select id="dr-n"><option>5</option><option selected>10</option><option>15</option><option value="999">All</option></select></div>
+        </div>
+        <div><button class="btn primary" type="button" id="dr-start">Start drill</button></div>
+      </div>
+      ${last ? `<p class="muted" style="font-size:.85rem;margin:0">Last drill ${esc(last.date)}: ${last.got} got it, ${last.shaky} shaky, ${last.missed} missed out of ${last.total}.</p>` : ""}`;
+    $("#dr-start").addEventListener("click", startDrill);
+  }
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function startDrill() {
+    const src = $("#dr-src").value, topic = $("#dr-topic").value;
+    let { reported, mocks } = drillSources();
+    if (topic) { reported = reported.filter(r => byId[r.qid].topic === topic); mocks = topic ? [] : mocks; }
+    let deck;
+    if (src === "reported") deck = reported;
+    else if (src === "mocks") deck = mocks;
+    else if (src === "weak") deck = reported.filter(r => ["Not started", "Learning"].includes(myStatus(r.qid))).sort((a, b) => +byId[b.qid].dataset_frequency - +byId[a.qid].dataset_frequency);
+    else deck = reported.concat(mocks);
+    if (src !== "weak") shuffle(deck);
+    deck = deck.slice(0, +$("#dr-n").value);
+    if (!deck.length) { toast("No questions match that choice. Pick another topic or source."); return; }
+    Object.assign(drill, { deck, i: 0, results: [], secs: +$("#dr-secs").value });
+    showCard();
+  }
+  function stopTimer() { if (drill.timer) { clearInterval(drill.timer); drill.timer = null; } }
+  function showCard() {
+    stopTimer();
+    const c = drill.deck[drill.i]; drill.revealed = false; drill.left = drill.secs;
+    const hasNotes = c.qid && byId[c.qid].solution_md;
+    $("#drill-body").innerHTML = `
+      <div class="drill-row"><span class="muted">Question ${drill.i + 1} of ${drill.deck.length} · ${esc(c.kind)}${c.qid ? " · " + c.qid : ""}</span><button class="btn" type="button" id="dr-quit">End drill</button></div>
+      <div class="card-q">
+        <div class="timer" id="dr-timer"><i></i></div>
+        <div class="prompt">${esc(c.text)}</div>
+        <div class="drill-row">
+          <span class="secs" id="dr-secs-left">${drill.left}s</span>
+          ${hasNotes ? `<button class="btn" type="button" id="dr-reveal">Show notes</button>` : `<span class="muted" style="font-size:.85rem">${c.qid ? "No notes yet" : "Generated question: no stored answer"}</span>`}
+        </div>
+        <div class="rate" role="group" aria-label="Rate your answer">
+          <button class="btn" type="button" data-r="got">Got it</button>
+          <button class="btn" type="button" data-r="shaky">Shaky</button>
+          <button class="btn" type="button" data-r="missed">Missed</button>
+        </div>
+        <div class="reveal" id="dr-notes" hidden></div>
+      </div>`;
+    $("#dr-quit").addEventListener("click", finishDrill);
+    if (hasNotes) $("#dr-reveal").addEventListener("click", () => { const n = $("#dr-notes"); if (n.hidden) renderMd(n, byId[c.qid].solution_md); n.hidden = !n.hidden; $("#dr-reveal").textContent = n.hidden ? "Show notes" : "Hide notes"; });
+    $("#drill-body").querySelectorAll("[data-r]").forEach(b => b.addEventListener("click", () => rate(b.dataset.r)));
+    const bar = $("#dr-timer i");
+    drill.timer = setInterval(() => {
+      drill.left -= 1;
+      const s = $("#dr-secs-left"); if (!s) { stopTimer(); return; }
+      s.textContent = drill.left > 0 ? drill.left + "s" : "Time";
+      bar.style.width = Math.max(0, drill.left / drill.secs * 100) + "%";
+      $("#dr-timer").classList.toggle("low", drill.left <= 5);
+      if (drill.left <= 0) stopTimer();
+    }, 1000);
+  }
+  function rate(r) {
+    drill.results.push(Object.assign({}, drill.deck[drill.i], { r, overtime: drill.left <= 0 }));
+    drill.i += 1;
+    if (drill.i < drill.deck.length) showCard(); else finishDrill();
+  }
+  function finishDrill() {
+    stopTimer();
+    const R = drill.results, cnt = k => R.filter(x => x.r === k).length;
+    store.set(DKEY, { date: new Date().toISOString().slice(0, 10), got: cnt("got"), shaky: cnt("shaky"), missed: cnt("missed"), total: R.length });
+    const updatable = R.filter(x => x.qid);
+    $("#drill-body").innerHTML = `
+      <div class="paper" style="display:grid;gap:16px">
+        <h3 class="sec">Drill finished</h3>
+        <p style="margin:0">${cnt("got")} got it · ${cnt("shaky")} shaky · ${cnt("missed")} missed · ${R.filter(x => x.overtime).length} over time</p>
+        ${R.length ? `<div class="tbl-wrap"><table class="plain"><thead><tr><th>Question</th><th>Rating</th><th>Timer</th></tr></thead><tbody>
+          ${R.map(x => `<tr><td>${x.qid ? `<button type="button" class="qlink" data-q="${x.qid}">${x.qid}</button> ` : ""}${esc(x.text)}</td><td>${x.r === "got" ? "Got it" : x.r === "shaky" ? "Shaky" : "Missed"}</td><td>${x.overtime ? "Over" : "In time"}</td></tr>`).join("")}
+        </tbody></table></div>` : ""}
+        ${updatable.length ? `<p class="muted" style="margin:0;font-size:.88rem">Update progress from this drill: missed or shaky questions become Learning; questions you got in time become Confident unless already Mastered.</p>` : ""}
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${updatable.length ? `<button class="btn primary" type="button" id="dr-apply">Update my progress</button>` : ""}
+          <button class="btn" type="button" id="dr-again">New drill</button>
+        </div>
+      </div>`;
+    $("#drill-body").querySelectorAll("[data-q]").forEach(b => b.addEventListener("click", () => openQuestion(b.dataset.q)));
+    $("#dr-again").addEventListener("click", renderDrillSetup);
+    const ap = $("#dr-apply");
+    if (ap) ap.addEventListener("click", () => {
+      const today = new Date().toISOString().slice(0, 10);
+      updatable.forEach(x => {
+        const cur = myStatus(x.qid);
+        let next = cur;
+        if (x.r !== "got" || x.overtime) next = cur === "Not started" || cur === "Confident" || cur === "Mastered" ? "Learning" : cur;
+        else if (cur !== "Mastered") next = "Confident";
+        progress[x.qid] = Object.assign({}, progress[x.qid], { status: next, updated: today });
+      });
+      saveProgress(); renderHeader(); renderLedger();
+      ap.disabled = true; ap.textContent = "Progress updated"; toast("Progress updated");
+    });
+  }
+
+  /* ---------- plans ---------- */
+  function renderPlans() {
+    const el = $("#plans-body");
+    if (!KB.plans.length) {
+      el.innerHTML = `<div class="paper" style="display:grid;gap:12px;max-width:760px">
+        <h3 class="sec">No preparation plans yet</h3>
+        <p style="margin:0">Plans live in <span class="mono">kb/plans/</span> and show up here after the next build. To get one, tell Claude your interview date and target company, for example: <i>"Make a 14-day Mastercard plan, interview on 2 November."</i></p>
+        <p class="muted" style="margin:0">Until then, the Mastercard guide's roadmap section lists priorities from the reported experience.</p>
+        <div><button class="btn" type="button" id="pl-go">Open Mastercard roadmap</button></div>
+      </div>`;
+      const b = $("#pl-go"); if (b) b.addEventListener("click", () => { go("companies"); setTimeout(() => { const h = [...document.querySelectorAll("#company-md h2")].find(x => /roadmap/i.test(x.textContent)); if (h) h.scrollIntoView({ behavior: "smooth" }); }, 60); });
+      return;
+    }
+    el.innerHTML = `<div class="split"><div class="picker" id="plan-picker"></div><article class="paper" id="plan-md"></article></div>`;
+    let cur = 0;
+    const draw = () => {
+      $("#plan-picker").innerHTML = KB.plans.map((p, i) => `<button class="pick" type="button" data-i="${i}" aria-pressed="${i === cur}"><b>${esc(p.title)}</b><small class="mono">${esc(p.file)}</small></button>`).join("");
+      $("#plan-picker").querySelectorAll(".pick").forEach(b => b.addEventListener("click", () => { cur = +b.dataset.i; draw(); }));
+      renderMd($("#plan-md"), KB.plans[cur].md);
+    };
+    draw();
+  }
+
+  /* ---------- backup modal ---------- */
+  function openModal() { $("#m-export").value = JSON.stringify(progress, null, 2); $("#m-msg").textContent = ""; $("#modal").hidden = false; $("#m-copy").focus(); }
+  function closeModal() { $("#modal").hidden = true; $("#btn-backup").focus(); }
+  $("#btn-backup").addEventListener("click", openModal);
+  $("#m-close").addEventListener("click", closeModal);
+  $("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+  $("#m-copy").addEventListener("click", () => {
+    const ta = $("#m-export");
+    const fallback = () => { ta.focus(); ta.select(); $("#m-msg").textContent = "Text selected. Press Ctrl+C or Cmd+C to copy."; };
+    try { navigator.clipboard.writeText(ta.value).then(() => { $("#m-msg").textContent = "Copied."; }, fallback); } catch (e) { fallback(); }
+  });
+  $("#m-import-btn").addEventListener("click", () => {
+    let data;
+    try { data = JSON.parse($("#m-import").value); } catch (e) { $("#m-msg").textContent = "That text isn't valid backup JSON. Paste the full text you copied, including the braces."; return; }
+    if (!data || typeof data !== "object" || Array.isArray(data)) { $("#m-msg").textContent = "Backup should be an object keyed by question ID, like {\"Q-0005\": {...}}."; return; }
+    let n = 0;
+    Object.entries(data).forEach(([k, v]) => {
+      if (!byId[k] || !v || typeof v !== "object") return;
+      const mine = progress[k];
+      if (!mine || !mine.updated || (v.updated && v.updated >= mine.updated)) { progress[k] = { status: MY.includes(v.status) ? v.status : (mine && mine.status) || "Not started", notes: v.notes || (mine && mine.notes) || "", updated: v.updated || "" }; n++; }
+    });
+    const ok = saveProgress();
+    $("#m-export").value = JSON.stringify(progress, null, 2);
+    $("#m-msg").textContent = ok ? `Imported ${n} question${n === 1 ? "" : "s"}. Newer entries win.` : `Imported ${n} for this visit, but storage is blocked so it won't persist.`;
+    renderHeader(); renderLedger();
+  });
+
+  /* ---------- routing ---------- */
+  const VIEWS = ["questions", "companies", "topics", "drill", "plans"];
+  const rendered = {};
+  function go(view) {
+    if (!VIEWS.includes(view)) view = "questions";
+    VIEWS.forEach(v => { $("#view-" + v).hidden = v !== view; $("#tab-" + v).setAttribute("aria-selected", String(v === view)); });
+    if (view !== "drill") stopTimer();
+    if (view === "companies" && !rendered.companies) { renderCompanies(); rendered.companies = true; }
+    if (view === "topics") renderTopics();
+    if (view === "drill" && !drill.timer) renderDrillSetup();
+    if (view === "plans" && !rendered.plans) { renderPlans(); rendered.plans = true; }
+    try { history.replaceState(null, "", "#" + view); } catch (e) {}
+  }
+  document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => go(t.dataset.view)));
+
+  renderHeader(); initFilters(); renderLedger();
+  const hash = (location.hash || "").slice(1);
+  if (/^Q-\d{4}$/.test(hash)) { go("questions"); openQuestion(hash); } else go(hash);
+})();
+</script>
