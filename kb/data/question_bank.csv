@@ -22,3 +22,11 @@ Q-0020,DSA: HashMap + sorting problem (exact problem unknown),DSA,Hashing + Sort
 Q-0021,How thread pools are created (ThreadPoolExecutor internals),Concurrency,Executors,Java,Unknown,Medium,1,Mastercard,Drafted,solutions/concurrency.md#Q-0021,Unknown,
 Q-0022,Do threads in a pool 'actually die'?,Concurrency,Executors,Java,Unknown,Medium,1,Mastercard,Drafted,solutions/concurrency.md#Q-0022,Unknown,
 Q-0023,Thread lifecycle and thread management,Concurrency,Thread lifecycle,Java,Unknown,Easy,1,Mastercard,Drafted,solutions/concurrency.md#Q-0023,Unknown,
+Q-0024,Find all unique pairs in a sorted array that sum to a target,DSA,Two pointers,DSA,Unknown (interviewer 'satisfied'),Easy,1,Google,Drafted,solutions/dsa.md#Q-0024,Unknown,Related to Q-0020 (hashing family); follow-up on duplicates
+Q-0025,Lowest common ancestor in a binary tree,DSA,Trees / DFS,DSA,Unknown,Medium,1,Google,Drafted,solutions/dsa.md#Q-0025,Unknown,Follow-up became Q-0026
+Q-0026,Lowest common ancestor in a binary search tree (follow-up),DSA,Trees / BST,DSA,Unknown,Easy,1,Google,Drafted,solutions/dsa.md#Q-0026,Unknown,Asked as follow-up to Q-0025
+Q-0027,Design a URL shortening service,System Design,HLD,HLD,Unknown,Medium,1,Google,Drafted,solutions/hld.md#Q-0027,Unknown,Candidate covered hashing / schema / Redis cache / read throughput
+Q-0028,Tell me about handling a disagreement,Behavioral,Conflict,Behavioral,Unknown,Medium,1,Google,Needs-user-input,solutions/behavioral.md#Q-0028,Unknown,
+Q-0029,Tell me about a decision made with incomplete information,Behavioral,Ambiguity,Behavioral,Unknown,Medium,1,Google,Needs-user-input,solutions/behavioral.md#Q-0029,Unknown,
+Q-0030,Tell me about mentoring junior engineers,Behavioral,Leadership,Behavioral,Unknown,Medium,1,Google,Needs-user-input,solutions/behavioral.md#Q-0030,Unknown,SDE-2 level signal
+Q-0031,Background / self-introduction,Behavioral,Introduction,Behavioral,Unknown,Easy,1,Google,Needs-user-input,solutions/behavioral.md#Q-0031,Unknown,Short discussion before coding in phone screen

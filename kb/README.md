@@ -36,3 +36,4 @@ All frequency counts are **within this collected dataset only**. They are not ev
 
 - 2026-10-16 — KB created. Ingested EXP-0001 (Mastercard, SDE 2 Full Stack). Added Q-0001 – Q-0023, APP-0001 – APP-0027, Mastercard guide, 5 solution files, topic index.
 - 2026-10-16 — Added dashboard (`dashboard/template.html`, `dashboard/build.py`) and GitHub Pages workflow. Dashboard reads `kb/` at build time; keep CSV headers and `## Q-xxxx` solution headings stable so the build can parse them.
+- 2026-10-16 — Ingested EXP-0002 (Google, SDE-2, Bangalore). Added Q-0024 – Q-0031, APP-0028 – APP-0035, Google guide, `solutions/hld.md`, `solutions/behavioral.md`, Java solutions for Q-0024 – Q-0026. Convention: all DSA solutions are written in Java (17+), even when the source candidate used another language.
